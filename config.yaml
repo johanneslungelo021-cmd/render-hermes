@@ -12,6 +12,15 @@ providers:
     - deepseek-v4-pro
     name: OpenCode
     key_env: OPENCODE_API_KEY
+  mistral:
+    api: https://api.mistral.ai/v1
+    default_model: pixtral-12b
+    models:
+    - pixtral-12b
+    - mistral-large-latest
+    - mistral-small-latest
+    name: Mistral
+    key_env: MISTRAL_API_KEY
 toolsets:
 - hermes-cli
 - web
@@ -21,6 +30,7 @@ agent:
   tool_use_enforcement: auto
   task_completion_guidance: true
   environment_probe: true
+  image_input_mode: auto
 terminal:
   backend: local
   timeout: 180
@@ -62,6 +72,10 @@ platform_toolsets:
   - tts
   - vision
   - web
+auxiliary:
+  vision:
+    provider: mistral
+    model: pixtral-12b
 dashboard:
   theme: default
 security:
