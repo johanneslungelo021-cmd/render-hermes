@@ -1,0 +1,70 @@
+model:
+  default: deepseek-v4-flash-free
+  provider: opencode
+  base_url: https://opencode.ai/zen/v1
+providers:
+  opencode:
+    api: https://opencode.ai/zen/v1
+    default_model: deepseek-v4-flash-free
+    models:
+    - deepseek-v4-flash-free
+    - deepseek-v4-fast-free
+    - deepseek-v4-pro
+    name: OpenCode
+    key_env: OPENCODE_API_KEY
+toolsets:
+- hermes-cli
+- web
+agent:
+  max_turns: 150
+  gateway_timeout: 1800
+  tool_use_enforcement: auto
+  task_completion_guidance: true
+  environment_probe: true
+terminal:
+  backend: local
+  timeout: 180
+  docker_image: nikolaik/python-nodejs:python3.11-nodejs20
+web:
+  backend: ddgs
+browser:
+  inactivity_timeout: 120
+  engine: auto
+skills:
+  external_dirs:
+  - /root/.agents/skills
+  - /root/.pi/agent/skills
+  - /root/.pi/agent/skills/pi-skills
+display:
+  personality: default
+  streaming: true
+  skin: default
+telegram:
+  reactions: false
+  channel_prompts: {}
+  allowed_chats: ''
+platform_toolsets:
+  telegram:
+  - browser
+  - clarify
+  - code_execution
+  - computer_use
+  - cronjob
+  - delegation
+  - file
+  - image_gen
+  - memory
+  - messaging
+  - session_search
+  - skills
+  - terminal
+  - todo
+  - tts
+  - vision
+  - web
+dashboard:
+  theme: default
+security:
+  redact_secrets: true
+logging:
+  level: INFO

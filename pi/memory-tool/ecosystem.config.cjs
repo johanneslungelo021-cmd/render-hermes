@@ -1,0 +1,46 @@
+module.exports = {
+  apps: [
+    {
+      name: "a2a-server",
+      script: "/usr/bin/python3",
+      args: "/root/pi/memory-tool/a2a-server.py",
+      cwd: "/root/pi/memory-tool",
+      log_date_format: "YYYY-MM-DD HH:mm:ss",
+      max_restarts: 10,
+      min_uptime: "10s",
+      restart_delay: 3000,
+      env: {
+        A2A_SERVER_PORT: "8087",
+        LLM_PROVIDER: "opencode",
+        LLM_API_URL: "https://opencode.ai/zen/v1",
+        LLM_API_KEY: "",
+        LLM_MODEL: "deepseek-v4-flash-free",
+        OPENCODE_MODEL: "deepseek-v4-flash-free",
+        MISTRAL_API_KEY: "",
+      },
+    },
+    {
+      name: "tg-a2a-bot",
+      script: "/usr/bin/python3",
+      args: "/root/pi/memory-tool/tg_a2a_bot.py",
+      cwd: "/root/pi/memory-tool",
+      log_date_format: "YYYY-MM-DD HH:mm:ss",
+      max_restarts: 10,
+      min_uptime: "10s",
+      restart_delay: 3000,
+      env: {
+        TELEGRAM_TOKEN: "",
+        A2A_URL: "http://localhost:8087",
+      },
+    },
+    {
+      name: "cloudflared-tunnel",
+      script: "/usr/local/bin/cloudflared",
+      args: "tunnel --url http://localhost:8087",
+      log_date_format: "YYYY-MM-DD HH:mm:ss",
+      max_restarts: 10,
+      min_uptime: "10s",
+      restart_delay: 5000,
+    },
+  ],
+};

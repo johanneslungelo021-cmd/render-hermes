@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+*.png
+*.jpg
+pi/agent-zero/trader-intelligence/scans/
+pi/memory-tool/__pycache__/
+node_modules/

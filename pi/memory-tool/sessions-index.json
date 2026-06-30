@@ -1,0 +1,75 @@
+{
+  "sessions": [
+    {
+      "file": "/root/.pi/agent/sessions/--root--/2026-06-29T21-20-48-009Z_019f1541-9788-7e34-a5f2-349ecaba42b1.jsonl",
+      "name": "2026-06-29T21-20-48-009Z_019f1541-9788-7e34-a5f2-349ecaba42b1.jsonl",
+      "size": 1390,
+      "size_kb": 1.4,
+      "timestamp": "2026:06:29 21:20:48"
+    },
+    {
+      "file": "/root/.pi/agent/sessions/--root--/2026-06-29T22-12-25-721Z_019f1570-dbf9-72a1-ae2d-20202b33503d.jsonl",
+      "name": "2026-06-29T22-12-25-721Z_019f1570-dbf9-72a1-ae2d-20202b33503d.jsonl",
+      "size": 23199,
+      "size_kb": 22.7,
+      "timestamp": "2026:06:29 22:12:25"
+    },
+    {
+      "file": "/root/.pi/agent/sessions/--root--/2026-06-29T22-20-19-154Z_019f1578-1551-793c-8105-4096cbfdac0c.jsonl",
+      "name": "2026-06-29T22-20-19-154Z_019f1578-1551-793c-8105-4096cbfdac0c.jsonl",
+      "size": 407914,
+      "size_kb": 398.4,
+      "timestamp": "2026:06:29 22:20:19"
+    },
+    {
+      "file": "/root/.pi/agent/sessions/--root--/2026-06-30T02-25-45-893Z_019f1658-cba5-7fd4-bc6d-ba8d070d376b.jsonl",
+      "name": "2026-06-30T02-25-45-893Z_019f1658-cba5-7fd4-bc6d-ba8d070d376b.jsonl",
+      "size": 1547745,
+      "size_kb": 1511.5,
+      "timestamp": "2026:06:30 02:25:45"
+    },
+    {
+      "file": "/root/.pi/agent/sessions/--root--/2026-06-30T14-39-03-232Z_019f18f8-2440-7e3d-bd35-717a6d204da4.jsonl",
+      "name": "2026-06-30T14-39-03-232Z_019f18f8-2440-7e3d-bd35-717a6d204da4.jsonl",
+      "size": 643049,
+      "size_kb": 628.0,
+      "timestamp": "2026:06:30 14:39:03"
+    }
+  ],
+  "learnings": [
+    "[2026-06-30 15:56] Mistral API key: correct is dU3kS44S..., env had wrong 7iJPINtf... \u2014 fixed in bashrc session 2026-06-30T02:25",
+    "[2026-06-30 15:56] Agent Zero Responses API bug: a0_api_mode must be chat_completions for Mistral, not responses",
+    "[2026-06-30 15:56] TradingView Canvas \u2192 Vision SMC pipeline: stealth Chrome captures canvas, Mistral Pixtral extracts structured SMC JSON",
+    "[2026-06-30 15:56] Ground-truth anchoring: DOM title has live price \u2014 parse and inject into vision prompt to fix axis hallucination",
+    "[2026-06-30 15:56] Semantic inversion validator: Pydantic model_validator enforces buy OB below price, sell OB above price",
+    "[2026-06-30 15:56] Agent Zero tunnel: changed from threatening-sheffield-trans-dod to list-glucose-been-mil.trycloudflare.com",
+    "[2026-06-30 15:56] Telegram bot connected to Agent Zero at new tunnel URL",
+    "[2026-06-30 15:56] n8n at rosimada.app.n8n.cloud \u2014 polls Numerai every 15min, Round 1300, currently idling Skip/Idle node",
+    "[2026-06-30 15:56] n8n MCP bearer token in /root/.config/opencode/opencode.json under n8n key",
+    "[2026-06-30 15:56] Multi-agent blueprint: n8n as event router \u2192 ephemeral runner with Data/Inference/Analytics agents \u2192 Gatekeeper",
+    "[2026-06-30 15:56] Scanner last ran: EURUSD, BTCUSD, XAUUSD \u2014 charts captured, Vision failed 401 due to wrong env key",
+    "[2026-06-30 15:56] Moltcorp agent at /root/moltcorp-agent/ \u2014 Node.js bot votes/comments on Moltcorp platform, sends Discord",
+    "[2026-06-30 15:56] The Hidden Ledger: local git repo, no remote \u2014 has Numerai pipeline, training scripts, model files",
+    "[2026-06-30 15:56] Kaggle API: lungelo-luda, key at /root/.kaggle/kaggle.json",
+    "[2026-06-30 15:56] GitHub token: ghp_RE60O... at /root/.github-token",
+    "[2026-06-30 15:56] Chrome 149 at playwright cache \u2014 CDP on :9222 with Xvfb stealth, 19/19 tests passing",
+    "[2026-06-30 15:58] SESSION 2026-06-30T02:25 (1.5MB): Full A0 CLI setup, Mistral API config, Telegram connect, TradingView Canvas\u2192Vision pipeline built, ground-truth anchoring fix, semantic inversion validator, multi-asset scanner, CodeRabbit review, Mistral env key bug fix",
+    "[2026-06-30 15:58] SESSION 2026-06-30T14:39 (628KB): Current session \u2014 new Agent Zero tunnel URL, Telegram reconnected, n8n orchestrator discovered, multi-agent consensus swarm blueprint discussed, memory tool built",
+    "[2026-06-30 15:58] SESSION 2026-06-29T22:20 (398KB): Explored pi browser-tools SESSION_MEMORY.md, explored agent skill ecosystem",
+    "[2026-06-30 15:58] SESSION 2026-06-29T22:12 (23KB): Initial A0 CLI setup exploration, switched from Mistral to OpenCode provider",
+    "[2026-06-30 15:58] SESSION 2026-06-29T21:20 (1KB): Very short session, Mistral API 401 error, essentially empty",
+    "[2026-06-30 16:01] Web UI started on port 8083 \u2014 Pi Memory Web UI is live",
+    "[2026-06-30 16:05] A2A Connector running on port 8084 \u2014 implements Google Agent-to-Agent protocol with 5 capabilities: memory, browser, code_execution, numerai, scanner",
+    "[2026-06-30 16:05] Web UI running on port 8083 \u2014 Pi Memory dashboard with search, add, session viewer",
+    "[2026-06-30 16:05] Agent Zero can discover the A2A connector via /.well-known/agent.json endpoint",
+    "[2026-06-30 16:05] A2A task system proven \u2014 test task completed successfully (memory status)",
+    "[2026-06-30 17:29] A2A Agent Server running on port 8086 with 7 tools \u2014 full thought/tool-call/result streaming via SSE. Available at https://excessive-reading-waiver-wires.trycloudflare.com",
+    "[2026-06-30 17:29] CodeRabbit review completed \u2014 fixed 7 issues in A2A code (thread safety, tool_call_id passthrough, task_id preservation, per-task error handling, decorator pattern, tmux wrapper, full UUIDs)",
+    "[2026-06-30 17:29] System stack: Qdrant (local mode, 0 vectors seeded), LocalAI embedding via Mistral API, Supabase REST connected, tmux ready for subordinate agents",
+    "[2026-06-30 17:29] Old chat server (:8085) killed. A2A Server (:8086) replaces it with proper protocol",
+    "[2026-06-30 17:35] A2A Agent now has 10 tools: +cat (multi-file read), +browser (Chrome CDP: navigate/capture/screenshot/evaluate), +skill (load any skill from the 40+ skill library)",
+    "[2026-06-30 17:35] New tunnel URL: https://leeds-motorola-asthma-spyware.trycloudflare.com (port 8087, port 8086 has stuck TIME_WAIT)",
+    "[2026-06-30 17:40] A2A Agent chat working \u2014 streaming thoughts+text, 10 tools, no errors. Port 8087."
+  ],
+  "last_round": 0
+}

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Pi Memory Tool — CLI Wrapper
+MEMORY_SCRIPT="/root/pi/memory-tool/memory.py"
+
+case "${1:-help}" in
+    load|save|compact|status)
+        python3 "$MEMORY_SCRIPT" "--$1"
+        ;;
+    add)
+        shift
+        python3 "$MEMORY_SCRIPT" "--add" "$*"
+        ;;
+    search)
+        shift
+        python3 "$MEMORY_SCRIPT" "--search" "$*"
+        ;;
+    help|--help|-h)
+        echo "Pi Memory Tool"
+        echo ""
+        echo "  pi-memory load       Load all context (run at session start)"
+        echo "  pi-memory save       Persist current state (run at session end)"
+        echo "  pi-memory add <text> Add a learning or decision"
+        echo "  pi-memory search <q> Search memory"
+        echo "  pi-memory status     Quick status overview"
+        echo "  pi-memory compact    Compact old session data"
+        ;;
+    *)
+        echo "Unknown: $1"
+        echo "Try: pi-memory help"
+        ;;
+esac

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: hermes-agent
+    runtime: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: DEFAULT_MODEL
+        value: deepseek-v4-flash-free
+      - key: DEFAULT_PROVIDER
+        value: opencode
+      - key: OPENCODE_API_KEY
+        sync: false
+      - key: MISTRAL_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        value: "8683400936:AAGJWs75wWYPeoImAoOH6NxtoWY6rtDDopg"
+      - key: TELEGRAM_WEBHOOK_URL
+        value: https://hermes-agent.onrender.com/telegram
