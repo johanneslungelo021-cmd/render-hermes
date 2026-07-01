@@ -39,20 +39,13 @@ if [ -z "$HERMES_CMD" ]; then
 fi
 echo "Found hermes at: $HERMES_CMD"
 
-# Start lightweight health check server on PORT
 PORT=${PORT:-8080}
-python3 -c "
-import http.server, os
-class H(http.server.BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b'OK')
-    def log_message(self, *a): pass
-http.server.HTTPServer(('0.0.0.0', int(os.environ.get('PORT', 8080))), H).serve_forever()
-" &
-echo "Health check server started on port $PORT"
 
-# Start Hermes Gateway (Telegram via long polling)
-echo "Starting Hermes Gateway..."
-exec "$HERMES_CMD" gateway 2>&1
+# Start Hermes Gateway in background (Telegram long polling)
+echo "Starting Hermes Gateway in background..."
+"$HERMES_CMD" gateway > /tmp/hermes-gateway.log 2>&1 &
+echo "Hermes Gateway started (PID: $!)"
+
+# Start Hermes Dashboard web UI as main process (serves web UI on PORT)
+echo "Starting Hermes Dashboard on port $PORT..."
+exec "$HERMES_CMD" dashboard --host 0.0.0.0 --port "$PORT" --insecure --skip-build 2>&1
