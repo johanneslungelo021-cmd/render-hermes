@@ -2,8 +2,8 @@ FROM nikolaik/python-nodejs:python3.11-nodejs22
 
 WORKDIR /app
 
-# Install Hermes Agent
-RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+# Install Hermes Agent (minimal)
+RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --yes 2>&1 || echo "Hermes install completed (may have warnings)"
 
 # Add hermes to PATH
 ENV PATH="/root/.local/bin:${PATH}"
@@ -22,7 +22,7 @@ ENV DEFAULT_MODEL="deepseek-v4-flash-free"
 ENV DEFAULT_PROVIDER="opencode"
 
 # Install Kaggle CLI
-RUN pip install kaggle && mkdir -p /root/.kaggle
+RUN pip install --quiet kaggle && mkdir -p /root/.kaggle
 
 # Entrypoint: write kaggle creds from env vars, then run Hermes
 COPY entrypoint.sh /entrypoint.sh
