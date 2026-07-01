@@ -9,19 +9,9 @@ RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --s
 ENV PATH="/usr/local/bin:/root/.local/bin:${PATH}"
 
 # Pre-build Hermes Dashboard web UI so runtime doesn't need npm
-RUN HERMES_WEB_DIR=$(python3 -c "
-import importlib, os, sys
-try:
-    spec = importlib.util.find_spec('hermes')
-    if spec:
-        print(os.path.join(os.path.dirname(spec.origin), 'web'))
-    else:
-        sys.exit(1)
-except:
-    print('/usr/local/lib/hermes-agent/web')
-" 2>/dev/null) && \
+RUN HERMES_WEB_DIR=$(find /usr/local/lib -path '*/hermes/web' -type d 2>/dev/null | head -1) && \
     echo "Web directory: $HERMES_WEB_DIR" && \
-    if [ -f "$HERMES_WEB_DIR/package.json" ]; then \
+    if [ -n "$HERMES_WEB_DIR" ] && [ -f "$HERMES_WEB_DIR/package.json" ]; then \
       cd "$HERMES_WEB_DIR" && \
       npm install --no-optional --no-fund --no-audit --silent && \
       NODE_OPTIONS="--max-old-space-size=512" npm run build --silent; \
