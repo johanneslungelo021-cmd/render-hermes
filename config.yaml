@@ -42,9 +42,7 @@ browser:
   engine: auto
 skills:
   external_dirs:
-  - /root/.agents/skills
-  - /root/.pi/agent/skills
-  - /root/.pi/agent/skills/pi-skills
+  - /root/pi/skills
 display:
   personality: default
   streaming: true
