@@ -2,48 +2,18 @@ FROM nikolaik/python-nodejs:python3.11-nodejs22
 
 WORKDIR /app
 
-# Install Hermes Agent via official install script
-RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --skip-setup --non-interactive 2>&1
+# Install Hermes Agent via official install script (step 1 from docs)
+RUN curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh \
+    | bash -s -- --skip-setup --non-interactive --skip-browser 2>&1
 
 # Ensure hermes is on PATH
 ENV PATH="/usr/local/bin:/root/.local/bin:${PATH}"
 
-# Install Chromium and dependencies for browser tools
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    chromium \
-    chromium-sandbox \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxrandr2 \
-    libgbm1 \
-    libpango-1.0-0 \
-    libcairo2 \
-    libasound2 \
-    && rm -rf /var/lib/apt/lists/*
+# Verify hermes installed
+RUN hermes --version 2>&1 || echo "WARNING: hermes --version failed"
 
-# Pre-build Hermes Dashboard web UI so runtime doesn't need npm
-RUN HERMES_WEB_DIR=$(find /usr/local/lib -path '*/hermes/web' -type d 2>/dev/null | head -1) && \
-    HERMES_CLI_DIR=$(find /usr/local/lib -path '*/hermes_cli' -type d 2>/dev/null | head -1) && \
-    echo "Web dir: $HERMES_WEB_DIR" && \
-    echo "CLI dir: $HERMES_CLI_DIR" && \
-    if [ -n "$HERMES_WEB_DIR" ] && [ -f "$HERMES_WEB_DIR/package.json" ]; then \
-      cd "$HERMES_WEB_DIR" && \
-      npm install --no-optional --no-fund --no-audit --silent && \
-      NODE_OPTIONS="--max-old-space-size=512" npm run build --silent && \
-      if [ -d "dist" ] && [ -n "$HERMES_CLI_DIR" ]; then \
-        echo "Copying web dist → $HERMES_CLI_DIR/web_dist" && \
-        rm -rf "$HERMES_CLI_DIR/web_dist" && \
-        cp -r dist "$HERMES_CLI_DIR/web_dist"; \
-      fi; \
-    fi
+# Copy Hermes config (model providers, toolsets)
+COPY config.yaml /root/.hermes/config.yaml
 
 # Copy Pi tools into the image
 COPY pi /root/pi/
@@ -57,19 +27,16 @@ RUN if [ -f /root/pi/skills/pi-skills/browser-tools/package.json ]; then \
 # Copy Numerai pipeline
 COPY the-hidden-ledger /root/the-hidden-ledger/
 
-# Copy Hermes config
-COPY config.yaml /root/.hermes/config.yaml
-
 # OpenCode provider
 ENV DEFAULT_MODEL="deepseek-v4-flash-free"
 ENV DEFAULT_PROVIDER="opencode"
 
-# Install system dependencies for entrypoint script
+# Install system deps for entrypoint
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3-yaml \
+    python3-yaml curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Kaggle CLI + pyyaml + Numerai deps
+# Install Kaggle CLI + Numerai deps
 RUN pip install --quiet kaggle pyyaml numpy pandas scipy && mkdir -p /root/.kaggle
 
 # Copy entrypoint
@@ -78,4 +45,4 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080
 
-CMD /entrypoint.sh
+CMD ["/entrypoint.sh"]
