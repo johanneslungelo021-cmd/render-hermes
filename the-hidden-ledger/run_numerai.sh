@@ -2,7 +2,6 @@
 # run_numerai.sh — Full Numerai pipeline: predict → submit → verify
 set -e
 cd /root/the-hidden-ledger
-source .venv/bin/activate
 
 echo "============================================"
 echo " Numerai Pipeline"

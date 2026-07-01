@@ -3,7 +3,7 @@ FROM nikolaik/python-nodejs:python3.11-nodejs22
 WORKDIR /app
 
 # Install Hermes Agent via official install script
-RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --yes 2>&1
+RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --skip-setup --non-interactive 2>&1
 
 # Ensure hermes is on PATH
 ENV PATH="/usr/local/bin:/root/.local/bin:${PATH}"
@@ -21,8 +21,8 @@ COPY config.yaml /root/.hermes/config.yaml
 ENV DEFAULT_MODEL="deepseek-v4-flash-free"
 ENV DEFAULT_PROVIDER="opencode"
 
-# Install Kaggle CLI + pyyaml
-RUN pip install --quiet kaggle pyyaml && mkdir -p /root/.kaggle
+# Install Kaggle CLI + pyyaml + Numerai deps
+RUN pip install --quiet kaggle pyyaml numpy pandas scipy && mkdir -p /root/.kaggle
 
 # Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh

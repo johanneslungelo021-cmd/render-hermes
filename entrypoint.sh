@@ -55,4 +55,4 @@ echo "Health check server started on port $PORT"
 
 # Start Hermes Gateway (Telegram via long polling)
 echo "Starting Hermes Gateway..."
-exec "$HERMES_CMD" gateway run 2>&1
+exec "$HERMES_CMD" gateway 2>&1
