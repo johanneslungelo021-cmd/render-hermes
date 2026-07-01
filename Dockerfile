@@ -11,23 +11,25 @@ ENV PATH="/root/.local/bin:${PATH}"
 # Copy Pi tools into the image
 COPY pi /root/pi/
 
+# Copy Numerai pipeline
+COPY the-hidden-ledger /root/the-hidden-ledger/
+
 # Copy Hermes config
 COPY config.yaml /root/.hermes/config.yaml
 
-# OpenCode provider
-ENV OPENCODE_API_KEY="sk-BYvG5nYkCJDPNjOejx2ThEcliOYcrUp8QQEqDobcVtncGGT47WQXrKNwopJiF97c"
-ENV XIAOMI_API_KEY=""
+# OpenCode provider (set via env on Render)
 ENV DEFAULT_MODEL="deepseek-v4-flash-free"
 ENV DEFAULT_PROVIDER="opencode"
 
-# Additional Pi tool env vars
-ENV MISTRAL_API_KEY="dU3kS44Srh8ovw6GE4H7pYRcqW3DaBXq"
+# Install Kaggle CLI
+RUN pip install kaggle && mkdir -p /root/.kaggle
 
-# Telegram
-ENV TELEGRAM_BOT_TOKEN="8683400936:AAGJWs75wWYPeoImAoOH6NxtoWY6rtDDopg"
+# Entrypoint: write kaggle creds from env vars, then run Hermes
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Expose Hermes Portal (web UI)
 EXPOSE 8080
 
-# Use Render's PORT if provided, else 8080
-CMD hermes portal --host 0.0.0.0 --port ${PORT:-8080}
+# Entrypoint writes kaggle creds, then starts Hermes Portal
+CMD /entrypoint.sh

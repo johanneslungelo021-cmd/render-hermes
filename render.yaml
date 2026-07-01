@@ -18,6 +18,30 @@ services:
       - key: MISTRAL_API_KEY
         sync: false
       - key: TELEGRAM_BOT_TOKEN
-        value: "8683400936:AAGJWs75wWYPeoImAoOH6NxtoWY6rtDDopg"
+        sync: false
       - key: TELEGRAM_WEBHOOK_URL
         value: https://hermes-agent-ilz7.onrender.com/telegram
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: NUMERAI_API_KEY
+        sync: false
+      - key: NUMERAI_MODEL_ID
+        sync: false
+      - key: NUMERAI_USERNAME
+        sync: false
+      - key: KAGGLE_USERNAME
+        sync: false
+      - key: KAGGLE_KEY
+        sync: false
+      - key: N8N_URL
+        sync: false
+      - key: N8N_API_KEY
+        sync: false
