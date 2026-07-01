@@ -48,4 +48,4 @@ echo "Hermes Gateway started (PID: $!)"
 
 # Start Hermes Dashboard web UI as main process (serves web UI on PORT)
 echo "Starting Hermes Dashboard on port $PORT..."
-exec "$HERMES_CMD" dashboard --host 0.0.0.0 --port "$PORT" --insecure --skip-build 2>&1
+exec "$HERMES_CMD" dashboard --host 0.0.0.0 --port "$PORT" --insecure 2>&1
