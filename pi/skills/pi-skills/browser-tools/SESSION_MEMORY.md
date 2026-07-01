@@ -1,4 +1,16 @@
-# Session Memory
+# Session Memory — Browser Tools
+
+## Chrome Binary
+- **Binary**: `/root/.cache/ms-playwright/chromium-1228/chrome-linux/chrome` (Chromium 149)
+- **Discovery**: Added Playwright path first in `CHROME_CANDIDATES` to avoid broken snap wrapper
+- **Snap wrapper** `/usr/bin/chromium-browser` moved to last resort (requires snap, not installed)
+
+## Usage
+```
+const { startBrowser } = require('./browser-start');
+const h = await startBrowser({ headless: true, port: 9236 });
+// Chrome starts on :9236
+```
 
 ## Teardown Lifecycle
 
@@ -11,7 +23,7 @@ See [TEARDOWN_LIFECYCLE.md](./TEARDOWN_LIFECYCLE.md) for the full 4-step browser
 | 3 | Xvfb socket cleanup (`/tmp/.X10-lock`) | Prevents display-port exhaustion across NATS worker pool |
 | 4 | `try/finally` + `process.on('SIGINT'/'SIGTERM'/'exit')` | Guarantees teardown runs even on catastrophic failure |
 
-### Clean vs Dirty Closure
+## Clean vs Dirty Closure
 
 | Metric | Clean Shutdown | Dirty Shutdown |
 |--------|---------------|----------------|

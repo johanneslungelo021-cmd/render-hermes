@@ -17,14 +17,17 @@ const os   = require('os');
 const crypto = require('crypto');
 
 const CHROME_CANDIDATES = [
+  // Playwright-managed Chromium (direct binary, no snap dependency)
+  path.join(os.homedir(), '.cache', 'ms-playwright', 'chromium-1228', 'chrome-linux', 'chrome'),
   '/opt/google/chrome/chrome',
   '/usr/bin/google-chrome',
   '/usr/bin/google-chrome-stable',
   '/usr/bin/chromium',
-  '/usr/bin/chromium-browser',
   '/snap/bin/chromium',
   path.join(os.homedir(), '.cache', 'puppeteer', 'chrome',
     'linux-131.0.6778.204', 'chrome-linux64', 'chrome'),
+  // Snap chromium-browser wrapper (last resort — often broken without snap)
+  '/usr/bin/chromium-browser',
 ];
 
 function findChromeBinary() {
