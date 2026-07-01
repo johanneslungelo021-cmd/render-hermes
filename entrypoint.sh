@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -uo pipefail
 
 echo "=== Impact AI - Hermes Agent Starting ==="
 date -u
@@ -49,7 +49,7 @@ EOF
   echo "✅ Dashboard auth configured"
 fi
 
-# Start Hermes Gateway in background
+# Start Hermes Gateway in background (ignore failure)
 echo "Starting Hermes Gateway..."
 "$HERMES_CMD" gateway > /tmp/hermes-gateway.log 2>&1 &
 echo "  Gateway PID: $!"
@@ -60,7 +60,7 @@ echo "Starting Hermes Dashboard on internal port $HERMES_PORT..."
 HERMES_DASHBOARD_PID=$!
 echo "  Dashboard PID: $HERMES_DASHBOARD_PID"
 
-# Wait for dashboard to be ready
+# Wait for dashboard to be ready (ignore curl failures while waiting)
 echo "Waiting for Hermes Dashboard..."
 for i in $(seq 1 15); do
   if curl -s "http://127.0.0.1:$HERMES_PORT/" > /dev/null 2>&1; then
@@ -68,11 +68,11 @@ for i in $(seq 1 15); do
     break
   fi
   if [ $i -eq 15 ]; then
-    echo "⚠️  Dashboard not responding after 15s, checking logs..."
-    tail -5 /tmp/hermes-dashboard.log 2>/dev/null || true
+    echo "⚠️  Dashboard not responding after 15s, dumping logs:"
+    cat /tmp/hermes-dashboard.log 2>/dev/null || echo "(no logs)"
   fi
   sleep 1
-done
+done || true  # prevent set -e from exiting on curl failure
 
 # Start health check proxy on PORT (handles Render health checks, proxies to Hermes)
 echo "Starting health proxy on port $PORT (→ Hermes on :$HERMES_PORT)..."
