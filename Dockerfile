@@ -8,6 +8,25 @@ RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --y
 # Ensure hermes is on PATH (root install puts it at /usr/local/bin)
 ENV PATH="/usr/local/bin:/root/.local/bin:${PATH}"
 
+# Pre-build Hermes Dashboard web UI so runtime doesn't need npm
+RUN HERMES_WEB_DIR=$(python3 -c "
+import importlib, os, sys
+try:
+    spec = importlib.util.find_spec('hermes')
+    if spec:
+        print(os.path.join(os.path.dirname(spec.origin), 'web'))
+    else:
+        sys.exit(1)
+except:
+    print('/usr/local/lib/hermes-agent/web')
+" 2>/dev/null) && \
+    echo "Web directory: $HERMES_WEB_DIR" && \
+    if [ -f "$HERMES_WEB_DIR/package.json" ]; then \
+      cd "$HERMES_WEB_DIR" && \
+      npm install --no-optional --no-fund --no-audit --silent && \
+      NODE_OPTIONS="--max-old-space-size=512" npm run build --silent; \
+    fi
+
 # Copy Pi tools into the image
 COPY pi /root/pi/
 
