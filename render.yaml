@@ -45,3 +45,7 @@ services:
         sync: false
       - key: N8N_API_KEY
         sync: false
+      - key: HERMES_PASSWORD
+        sync: false
+      - key: HERMES_DASHBOARD_USER
+        value: admin

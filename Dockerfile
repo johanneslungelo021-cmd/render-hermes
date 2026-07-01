@@ -37,8 +37,8 @@ COPY config.yaml /root/.hermes/config.yaml
 ENV DEFAULT_MODEL="deepseek-v4-flash-free"
 ENV DEFAULT_PROVIDER="opencode"
 
-# Install Kaggle CLI
-RUN pip install --quiet kaggle && mkdir -p /root/.kaggle
+# Install Kaggle CLI + pyyaml (for entrypoint config injection)
+RUN pip install --quiet kaggle pyyaml && mkdir -p /root/.kaggle
 
 # Entrypoint
 COPY entrypoint.sh /entrypoint.sh
