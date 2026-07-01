@@ -48,4 +48,5 @@ echo "Hermes Gateway started (PID: $!)"
 
 # Start Hermes Dashboard web UI as main process (serves web UI on PORT)
 echo "Starting Hermes Dashboard on port $PORT..."
+# Render sets PORT env var, we use it for the dashboard
 exec "$HERMES_CMD" dashboard --host 0.0.0.0 --port "$PORT" --insecure 2>&1

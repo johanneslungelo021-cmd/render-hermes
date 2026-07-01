@@ -23,7 +23,7 @@ Deploys [Hermes Agent](https://github.com/NousResearch/hermes-agent) (open-sourc
 | `pi/` | Pi tool ecosystem (memory, nerve, agent-zero) |
 | `the-hidden-ledger/` | NumerAI prediction pipeline |
 
-## Fixes Applied (Commit `71fad49`)
+## Fixes Applied
 
 | # | Problem | Fix |
 |---|---------|-----|
@@ -32,6 +32,11 @@ Deploys [Hermes Agent](https://github.com/NousResearch/hermes-agent) (open-sourc
 | 3 | `run_numerai.sh` referenced `.venv/bin/activate` (no venv in Docker) | Removed venv activation |
 | 4 | Missing `numpy`, `pandas`, `scipy` for NumerAI | Added to `pip install` |
 | 5 | No documentation | Created `README.md` |
+| 6 | Missing Chromium binary for browser tools | Installed `chromium` and dependencies in `Dockerfile` |
+| 7 | Browser tools hard-coded Playwright paths | Updated `browser-start.js` to prioritize system `/usr/bin/chromium` |
+| 8 | Sensitive API keys exposed in repo | Removed `API Keys Stored Locally` section from `RENDER_SESSION.md` |
+| 9 | Potential `python3-yaml` missing for entrypoint | Added `python3-yaml` to `Dockerfile` |
+| 10 | Port 8080 hard-coded in entrypoint logs | Updated logs to reflect `PORT` env var usage |
 
 ## Deploy Instructions
 
@@ -86,13 +91,6 @@ Render (Docker)
 │           ├── Agent-Zero Workflows
 │           └── NumerAI Pipeline
 ```
-
-## API Keys Stored Locally
-
-From `/root/.hermes/.env`:
-- **OpenCode**: `sk-BYvG5nYkCJDPNjOejx2ThEcliOYcrUp8QQEqDobcVtncGGT47WQXrKNwopJiF97c`
-- **MiMo (Xiaomi)**: `sk-sqrb9gpiffbahukcvuyrbvtjl873tc96na16fdylvtgabxzl`
-- **Mistral**: `dU3kS44SXmMmaQzYt8f9PPq0YHEmBTaP`
 
 ## Config Providers
 

@@ -8,6 +8,27 @@ RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --s
 # Ensure hermes is on PATH
 ENV PATH="/usr/local/bin:/root/.local/bin:${PATH}"
 
+# Install Chromium and dependencies for browser tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    chromium \
+    chromium-sandbox \
+    libnss3 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libxkbcommon0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libasound2 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Pre-build Hermes Dashboard web UI so runtime doesn't need npm
 RUN HERMES_WEB_DIR=$(find /usr/local/lib -path '*/hermes/web' -type d 2>/dev/null | head -1) && \
     HERMES_CLI_DIR=$(find /usr/local/lib -path '*/hermes_cli' -type d 2>/dev/null | head -1) && \
@@ -42,6 +63,11 @@ COPY config.yaml /root/.hermes/config.yaml
 # OpenCode provider
 ENV DEFAULT_MODEL="deepseek-v4-flash-free"
 ENV DEFAULT_PROVIDER="opencode"
+
+# Install system dependencies for entrypoint script
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-yaml \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Kaggle CLI + pyyaml + Numerai deps
 RUN pip install --quiet kaggle pyyaml numpy pandas scipy && mkdir -p /root/.kaggle
