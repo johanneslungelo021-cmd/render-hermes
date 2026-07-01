@@ -26,9 +26,8 @@ fi
 echo "✅ Found hermes at: $HERMES_CMD"
 echo "✅ Hermes version: $("$HERMES_CMD" --version 2>&1 || echo 'unknown')"
 
-# If HERMES_PASSWORD is set, inject basic_auth into config.yaml at boot
-if [ -n "${HERMES_PASSWORD:-}" ]; then
-  python3 - <<EOF
+# Configure dashboard auth in config.yaml
+python3 - <<EOF
 import yaml, os
 from plugins.dashboard_auth.basic import hash_password
 
@@ -36,18 +35,21 @@ cfg_path = '/root/.hermes/config.yaml'
 with open(cfg_path) as f:
     cfg = yaml.safe_load(f) or {}
 
+# Bind to localhost only (proxy handles external traffic)
 cfg.setdefault('dashboard', {})
-cfg['dashboard']['host'] = '0.0.0.0'
+cfg['dashboard']['host'] = '127.0.0.1'
 cfg['dashboard']['port'] = int(os.environ.get('HERMES_INTERNAL_PORT', '8081'))
+
+# Configure auth (use password from env, or a default for proxy access)
+password = os.environ.get('HERMES_PASSWORD', 'impact-admin')
 cfg['dashboard'].setdefault('basic_auth', {})
 cfg['dashboard']['basic_auth']['username'] = os.environ.get('HERMES_DASHBOARD_USER', 'admin')
-cfg['dashboard']['basic_auth']['password_hash'] = hash_password(os.environ['HERMES_PASSWORD'])
+cfg['dashboard']['basic_auth']['password_hash'] = hash_password(password)
 
 with open(cfg_path, 'w') as f:
     yaml.dump(cfg, f)
 EOF
-  echo "✅ Dashboard auth configured"
-fi
+echo "✅ Dashboard auth configured"
 
 # Start Hermes Gateway in background (ignore failure)
 echo "Starting Hermes Gateway..."
@@ -59,9 +61,9 @@ echo "Testing hermes dashboard command..."
 "$HERMES_CMD" dashboard --help > /tmp/hermes-dashboard-help.log 2>&1 || echo "dashboard --help failed"
 head -5 /tmp/hermes-dashboard-help.log 2>/dev/null || true
 
-# Start Hermes Dashboard on internal port (not directly exposed)
-echo "Starting Hermes Dashboard on internal port $HERMES_PORT..."
-"$HERMES_CMD" dashboard --host 0.0.0.0 --port "$HERMES_PORT" --insecure > /tmp/hermes-dashboard.log 2>&1 &
+# Start Hermes Dashboard on internal port (localhost only, proxy handles external)
+echo "Starting Hermes Dashboard on 127.0.0.1:$HERMES_PORT..."
+"$HERMES_CMD" dashboard --host 127.0.0.1 --port "$HERMES_PORT" --skip-build > /tmp/hermes-dashboard.log 2>&1 &
 HERMES_DASHBOARD_PID=$!
 echo "  Dashboard PID: $HERMES_DASHBOARD_PID"
 
