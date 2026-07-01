@@ -9,7 +9,7 @@ EOF
   chmod 600 /root/.kaggle/kaggle.json
 fi
 
-# If HERMES_PASSWORD is set, inject basic_auth hash into config.yaml at boot
+# If HERMES_PASSWORD is set, inject basic_auth into config.yaml at boot
 if [ -n "${HERMES_PASSWORD:-}" ]; then
   HASH=$(python3 -c "from plugins.dashboard_auth.basic import hash_password; print(hash_password('${HERMES_PASSWORD}'))")
   python3 - <<EOF
@@ -37,7 +37,22 @@ if [ -z "$HERMES_CMD" ]; then
   echo "ERROR: hermes command not found"
   exit 1
 fi
-
 echo "Found hermes at: $HERMES_CMD"
-echo "Starting Hermes Dashboard on port ${PORT:-8080}..."
-exec "$HERMES_CMD" dashboard --host 0.0.0.0 --port ${PORT:-8080} --insecure --skip-build 2>&1
+
+# Start lightweight health check server on PORT
+PORT=${PORT:-8080}
+python3 -c "
+import http.server, os
+class H(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b'OK')
+    def log_message(self, *a): pass
+http.server.HTTPServer(('0.0.0.0', int(os.environ.get('PORT', 8080))), H).serve_forever()
+" &
+echo "Health check server started on port $PORT"
+
+# Start Hermes Gateway (Telegram via long polling)
+echo "Starting Hermes Gateway..."
+exec "$HERMES_CMD" gateway run 2>&1

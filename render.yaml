@@ -19,8 +19,6 @@ services:
         sync: false
       - key: TELEGRAM_BOT_TOKEN
         sync: false
-      - key: TELEGRAM_WEBHOOK_URL
-        value: https://hermes-agent-ilz7.onrender.com/telegram
       - key: QDRANT_URL
         sync: false
       - key: QDRANT_API_KEY
