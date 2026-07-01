@@ -59,12 +59,18 @@ Deploys [Hermes Agent](https://github.com/NousResearch/hermes-agent) (open-sourc
 
 ### Other Optional Variables (from `render.yaml`)
 
-- `QDRANT_URL` / `QDRANT_API_KEY` — Vector store
-- `HF_TOKEN` — HuggingFace
-- `SUPABASE_URL` / `SUPABASE_KEY` — Database
-- `NUMERAI_API_KEY` / `NUMERAI_MODEL_ID` / `NUMERAI_USERNAME` — NumerAI
-- `KAGGLE_USERNAME` / `KAGGLE_KEY` — Kaggle
-- `N8N_URL` / `N8N_API_KEY` — n8n workflows
+| Variable | Service | Purpose |
+|----------|---------|---------|
+| `QDRANT_URL` / `QDRANT_API_KEY` | **Qdrant** | Vector store (memory) |
+| `SUPABASE_URL` / `SUPABASE_KEY` | **Supabase** | Database + Auth (MCP) |
+| `N8N_URL` / `N8N_API_KEY` | **n8n** | Workflow automation (MCP) |
+| `REDIS_URL` | **Redis Cloud** | Cache / KV store |
+| `NATS_URL` / `NATS_CREDS` | **NATS+JetStream** | Message broker |
+| `CADDY_URL` / `CADDY_API_KEY` | **Caddy** | Reverse proxy API |
+| `GRAFANA_URL` / `GRAFANA_API_KEY` | **Grafana** | Monitoring dashboards |
+| `HF_TOKEN` | HuggingFace | Model access |
+| `NUMERAI_API_KEY` / `NUMERAI_MODEL_ID` / `NUMERAI_USERNAME` | NumerAI | Tournament predictions |
+| `KAGGLE_USERNAME` / `KAGGLE_KEY` | Kaggle | Data science |
 
 ## Architecture
 

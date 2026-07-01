@@ -24,6 +24,19 @@ providers:
 toolsets:
 - hermes-cli
 - web
+- memory
+- todo
+- delegation
+- cronjob
+- code_execution
+- computer_use
+- session_search
+- clarify
+- file
+- terminal
+- browser
+- vision
+- skills
 agent:
   max_turns: 150
   gateway_timeout: 1800
@@ -47,6 +60,7 @@ display:
   personality: default
   streaming: true
   skin: default
+  interface: web
 telegram:
   reactions: false
   channel_prompts: {}
@@ -76,6 +90,47 @@ auxiliary:
     model: pixtral-12b
 dashboard:
   theme: default
+memory:
+  memory_enabled: true
+  provider: qdrant
+  qdrant:
+    url_env: QDRANT_URL
+    api_key_env: QDRANT_API_KEY
+    collection: hermes_memory
+
+mcp:
+  servers:
+    supabase:
+      type: http
+      url_env: SUPABASE_URL
+      headers:
+        Authorization: "Bearer ${SUPABASE_KEY}"
+        apikey: "${SUPABASE_KEY}"
+    n8n:
+      type: http
+      url_env: N8N_URL
+      headers:
+        Authorization: "Bearer ${N8N_API_KEY}"
+
+supabase:
+  url_env: SUPABASE_URL
+  key_env: SUPABASE_KEY
+
+redis:
+  url_env: REDIS_URL
+
+nats:
+  url_env: NATS_URL
+  creds_env: NATS_CREDS
+
+caddy:
+  url_env: CADDY_URL
+  api_key_env: CADDY_API_KEY
+
+grafana:
+  url_env: GRAFANA_URL
+  api_key_env: GRAFANA_API_KEY
+
 security:
   redact_secrets: true
 logging:

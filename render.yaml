@@ -43,6 +43,20 @@ services:
         sync: false
       - key: N8N_API_KEY
         sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: NATS_URL
+        sync: false
+      - key: NATS_CREDS
+        sync: false
+      - key: CADDY_URL
+        sync: false
+      - key: CADDY_API_KEY
+        sync: false
+      - key: GRAFANA_URL
+        sync: false
+      - key: GRAFANA_API_KEY
+        sync: false
       - key: HERMES_PASSWORD
         sync: false
       - key: HERMES_DASHBOARD_USER
