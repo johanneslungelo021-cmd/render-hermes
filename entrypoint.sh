@@ -54,25 +54,27 @@ echo "Starting Hermes Gateway..."
 "$HERMES_CMD" gateway > /tmp/hermes-gateway.log 2>&1 &
 echo "  Gateway PID: $!"
 
+# Test hermes dashboard command first
+echo "Testing hermes dashboard command..."
+"$HERMES_CMD" dashboard --help > /tmp/hermes-dashboard-help.log 2>&1 || echo "dashboard --help failed"
+head -5 /tmp/hermes-dashboard-help.log 2>/dev/null || true
+
 # Start Hermes Dashboard on internal port (not directly exposed)
 echo "Starting Hermes Dashboard on internal port $HERMES_PORT..."
 "$HERMES_CMD" dashboard --host 0.0.0.0 --port "$HERMES_PORT" --insecure > /tmp/hermes-dashboard.log 2>&1 &
 HERMES_DASHBOARD_PID=$!
 echo "  Dashboard PID: $HERMES_DASHBOARD_PID"
 
-# Wait for dashboard to be ready (ignore curl failures while waiting)
-echo "Waiting for Hermes Dashboard..."
-for i in $(seq 1 15); do
-  if curl -s "http://127.0.0.1:$HERMES_PORT/" > /dev/null 2>&1; then
-    echo "✅ Hermes Dashboard is ready"
-    break
-  fi
-  if [ $i -eq 15 ]; then
-    echo "⚠️  Dashboard not responding after 15s, dumping logs:"
-    cat /tmp/hermes-dashboard.log 2>/dev/null || echo "(no logs)"
-  fi
-  sleep 1
-done || true  # prevent set -e from exiting on curl failure
+# Wait briefly for dashboard
+sleep 5
+
+# Check if process is still running
+if kill -0 $HERMES_DASHBOARD_PID 2>/dev/null; then
+  echo "✅ Hermes Dashboard process is running"
+else
+  echo "⚠️  Hermes Dashboard process died. Logs:"
+  cat /tmp/hermes-dashboard.log 2>/dev/null || echo "(no logs)"
+fi
 
 # Start health check proxy on PORT (handles Render health checks, proxies to Hermes)
 echo "Starting health proxy on port $PORT (→ Hermes on :$HERMES_PORT)..."

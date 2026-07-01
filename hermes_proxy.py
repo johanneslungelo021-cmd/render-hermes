@@ -53,6 +53,28 @@ class HealthProxy(BaseHTTPRequestHandler):
             self.send_header('Content-Length', str(len(body)))
             self.end_headers()
             self.wfile.write(body)
+        elif self.path == '/admin/logs/dashboard':
+            try:
+                with open('/tmp/hermes-dashboard.log') as f:
+                    body = f.read().encode()
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/plain')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            except FileNotFoundError:
+                self.send_error(404, 'Dashboard log not found')
+        elif self.path == '/admin/logs/help':
+            try:
+                with open('/tmp/hermes-dashboard-help.log') as f:
+                    body = f.read().encode()
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/plain')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            except FileNotFoundError:
+                self.send_error(404, 'Help log not found')
         elif self.path.startswith('/admin/pair/telegram/'):
             code = self.path.split('/')[-1]
             try:
