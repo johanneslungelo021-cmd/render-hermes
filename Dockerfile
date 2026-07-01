@@ -24,12 +24,12 @@ ENV DEFAULT_PROVIDER="opencode"
 # Install Kaggle CLI
 RUN pip install --quiet kaggle && mkdir -p /root/.kaggle
 
-# Entrypoint: write kaggle creds from env vars, then run Hermes
+# Entrypoint: write kaggle creds from env vars, then run Hermes Dashboard
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Expose Hermes Portal (web UI)
+# Expose Hermes Dashboard (web UI)
 EXPOSE 8080
 
-# Entrypoint writes kaggle creds, then starts Hermes Portal
+# Entrypoint writes kaggle creds, then starts Hermes Dashboard
 CMD /entrypoint.sh

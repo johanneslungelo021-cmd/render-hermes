@@ -11,6 +11,6 @@ fi
 # Wait for potential port conflicts
 sleep 2
 
-# Start Hermes Portal
-echo "Starting Hermes Portal on port ${PORT:-8080}..."
-exec hermes portal --host 0.0.0.0 --port ${PORT:-8080} 2>&1
+# Start Hermes Dashboard (web UI for config, sessions, API keys)
+echo "Starting Hermes Dashboard on port ${PORT:-8080}..."
+exec hermes dashboard --host 0.0.0.0 --port ${PORT:-8080} --insecure --skip-build 2>&1
