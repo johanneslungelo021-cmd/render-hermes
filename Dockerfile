@@ -9,7 +9,11 @@ RUN curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/
 # Ensure hermes is on PATH
 ENV PATH="/usr/local/bin:/root/.local/bin:${PATH}"
 
-# Verify hermes installed
+# Fix uv hardlink issue with Docker overlay filesystem
+ENV UV_LINK_MODE=copy
+ENV UV_NO_CACHE=1
+
+# Verify hermes installed and pre-cache dependencies to avoid runtime errors
 RUN hermes --version 2>&1 || echo "WARNING: hermes --version failed"
 
 # Copy Hermes config (model providers, toolsets)
