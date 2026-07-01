@@ -20,6 +20,12 @@ RUN HERMES_WEB_DIR=$(find /usr/local/lib -path '*/hermes/web' -type d 2>/dev/nul
 # Copy Pi tools into the image
 COPY pi /root/pi/
 
+# Install browser-tools skill dependencies
+RUN if [ -f /root/pi/skills/pi-skills/browser-tools/package.json ]; then \
+      cd /root/pi/skills/pi-skills/browser-tools && \
+      npm install --no-optional --no-fund --no-audit --silent; \
+    fi
+
 # Copy Numerai pipeline
 COPY the-hidden-ledger /root/the-hidden-ledger/
 
