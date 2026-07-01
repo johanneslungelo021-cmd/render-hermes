@@ -13,4 +13,5 @@ sleep 2
 
 # Start Hermes Dashboard (web UI for config, sessions, API keys)
 echo "Starting Hermes Dashboard on port ${PORT:-8080}..."
+# --insecure needed to bind to 0.0.0.0 (non-localhost)
 exec hermes dashboard --host 0.0.0.0 --port ${PORT:-8080} --insecure 2>&1
