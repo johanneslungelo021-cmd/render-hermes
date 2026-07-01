@@ -51,15 +51,17 @@ with open(cfg_path, 'w') as f:
 EOF
 echo "✅ Dashboard auth configured"
 
+# Start Xvfb virtual display for computer-use (headless Linux)
+if command -v Xvfb &> /dev/null; then
+  export DISPLAY=:99
+  Xvfb :99 -screen 0 1920x1080x24 > /tmp/xvfb.log 2>&1 &
+  echo "✅ Xvfb started on :99"
+fi
+
 # Start Hermes Gateway in background (ignore failure)
 echo "Starting Hermes Gateway..."
 "$HERMES_CMD" gateway > /tmp/hermes-gateway.log 2>&1 &
 echo "  Gateway PID: $!"
-
-# Test hermes dashboard command first
-echo "Testing hermes dashboard command..."
-"$HERMES_CMD" dashboard --help > /tmp/hermes-dashboard-help.log 2>&1 || echo "dashboard --help failed"
-head -5 /tmp/hermes-dashboard-help.log 2>/dev/null || true
 
 # Start Hermes Dashboard on internal port (localhost only, proxy handles external)
 echo "Starting Hermes Dashboard on 127.0.0.1:$HERMES_PORT..."

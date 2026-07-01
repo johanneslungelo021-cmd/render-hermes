@@ -16,6 +16,17 @@ ENV UV_NO_CACHE=1
 # Verify hermes installed and pre-cache dependencies to avoid runtime errors
 RUN hermes --version 2>&1 || echo "WARNING: hermes --version failed"
 
+# Install cua-driver for computer-use toolset
+RUN hermes computer-use install 2>&1 || echo "WARNING: cua-driver install failed (not critical)"
+
+# Pre-build Hermes Dashboard web UI so runtime doesn't need npm
+RUN cd /usr/local/lib/hermes-agent/web && \
+    npm install --no-optional --no-fund --no-audit --silent 2>&1 && \
+    npm run build --silent 2>&1 && \
+    mkdir -p /usr/local/lib/hermes-agent/hermes_cli && \
+    cp -r dist /usr/local/lib/hermes-agent/hermes_cli/web_dist && \
+    echo "✅ Web UI built and copied to web_dist"
+
 # Copy Hermes config (model providers, toolsets)
 COPY config.yaml /root/.hermes/config.yaml
 
@@ -34,6 +45,12 @@ COPY the-hidden-ledger /root/the-hidden-ledger/
 # OpenCode provider
 ENV DEFAULT_MODEL="deepseek-v4-flash-free"
 ENV DEFAULT_PROVIDER="opencode"
+
+# Install Xvfb (virtual display for computer-use on headless Render)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    xvfb \
+    x11-utils \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install system deps for entrypoint
 RUN apt-get update && apt-get install -y --no-install-recommends \
