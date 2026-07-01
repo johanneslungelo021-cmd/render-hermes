@@ -43,6 +43,9 @@ RUN pip install --quiet kaggle pyyaml numpy pandas scipy && mkdir -p /root/.kagg
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Copy health check proxy
+COPY hermes_proxy.py /app/hermes_proxy.py
+
 EXPOSE 8080
 
 CMD ["/entrypoint.sh"]
