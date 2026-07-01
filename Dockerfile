@@ -24,9 +24,6 @@ ENV DEFAULT_PROVIDER="opencode"
 # Install Kaggle CLI
 RUN pip install --quiet kaggle && mkdir -p /root/.kaggle
 
-# Pre-build Hermes Dashboard web UI (needed for --skip-build to work)
-RUN cd /usr/local/lib/hermes-agent/web && npm install && npm run build
-
 # Entrypoint: write kaggle creds from env vars, then run Hermes Dashboard
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
