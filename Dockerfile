@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install Hermes Agent from GitHub with web+pty extras (required for dashboard)
 RUN pip install --quiet --upgrade pip && \
-    pip install --quiet "hermes-agent[web,pty] @ git+https://github.com/NousResearch/hermes-agent.git" && \
+    pip install --quiet "git+https://github.com/NousResearch/hermes-agent.git#egg=hermes-agent[web,pty]" && \
     HERMES_BIN=$(python3 -c "import sysconfig; print(sysconfig.get_path('scripts'))") && \
     echo "Hermes installed to: $HERMES_BIN" && \
     ls -la "$HERMES_BIN/hermes" 2>/dev/null && \
