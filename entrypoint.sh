@@ -39,5 +39,5 @@ if [ -z "$HERMES_CMD" ]; then
 fi
 
 echo "Found hermes at: $HERMES_CMD"
-echo "Starting Hermes Dashboard on port ${PORT:-8080}..."
-exec "$HERMES_CMD" dashboard --host 0.0.0.0 --port ${PORT:-8080} --insecure --skip-build 2>&1
+echo "Starting Hermes Dashboard on port ${PORT:-8080}... (first launch builds web UI)"
+exec "$HERMES_CMD" dashboard --host 0.0.0.0 --port ${PORT:-8080} --insecure 2>&1

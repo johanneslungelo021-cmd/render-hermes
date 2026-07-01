@@ -13,12 +13,6 @@ RUN git clone --depth 1 https://github.com/NousResearch/hermes-agent.git /tmp/he
     echo "Hermes bin: $HERMES_BIN" && \
     rm -rf /tmp/hermes-agent
 
-# Pre-build Hermes Dashboard web UI (avoids OOM at runtime on free tier)
-RUN HERMES_DIR=$(python3 -c "import importlib.util, os; spec=importlib.util.find_spec('hermes'); print(os.path.dirname(spec.origin))") && \
-    echo "Building web UI at: $HERMES_DIR/web" && \
-    ls "$HERMES_DIR/web/package.json" && \
-    cd "$HERMES_DIR/web" && npm install && npm run build
-
 RUN hermes postinstall --non-interactive 2>/dev/null || true
 
 # Ensure hermes is on PATH
@@ -47,5 +41,5 @@ RUN chmod +x /entrypoint.sh
 # Expose Hermes Dashboard (web UI)
 EXPOSE 8080
 
-# Start Hermes Dashboard (pre-built dist used via --skip-build)
+# Dashboard builds web UI on first launch, then serves
 CMD /entrypoint.sh
