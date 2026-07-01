@@ -2,9 +2,9 @@ FROM nikolaik/python-nodejs:python3.11-nodejs22
 
 WORKDIR /app
 
-# Install Hermes Agent from GitHub (lightweight, no web UI build)
+# Install Hermes Agent from GitHub with web+pty extras (required for dashboard)
 RUN pip install --quiet --upgrade pip && \
-    pip install --quiet git+https://github.com/NousResearch/hermes-agent.git && \
+    pip install --quiet "git+https://github.com/NousResearch/hermes-agent.git[web,pty]" && \
     hermes postinstall --non-interactive 2>/dev/null || true
 
 # Copy Pi tools into the image
@@ -27,6 +27,7 @@ RUN pip install --quiet kaggle && mkdir -p /root/.kaggle
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Expose Hermes Dashboard (web UI)
 EXPOSE 8080
 
 CMD /entrypoint.sh
